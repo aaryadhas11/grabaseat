@@ -1,6 +1,3 @@
-const dns = require('node:dns');
-dns.setDefaultResultOrder('ipv4first');
-
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
@@ -11,7 +8,7 @@ const cors = require('cors');
 const User = require('./models/User');
 const Booking = require('./models/Booking');
 const Movie = require('./models/Movie');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const Razorpay = require('razorpay');
 const QRCode = require('qrcode');
 const crypto = require('crypto');
@@ -28,18 +25,7 @@ const razorpayInstance = new Razorpay({
 
 const app = express();
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  lookup: (hostname, options, callback) => {
-    dns.lookup(hostname, { family: 4 }, callback);
-  },
-  auth: {
-    user: getTrimmedEnv('EMAIL_USER', process.env.EMAIL_USER),
-    pass: getTrimmedEnv('EMAIL_PASS', process.env.EMAIL_PASS)
-  }
-});
+const resend = new Resend(getTrimmedEnv('RESEND_API_KEY', process.env.RESEND_API_KEY));
 
 app.use(cors({
   origin: [
@@ -431,8 +417,8 @@ const handleForgotPassword = async (req, res) => {
     const resetUrl = `http://localhost:5173/reset-password/${token}`;
 
     try {
-      await transporter.sendMail({
-        from: `"GrabASeat Support" <${getTrimmedEnv('EMAIL_USER')}>`,
+      await resend.emails.send({
+        from: 'onboarding@resend.dev',
         to: user.email,
         subject: "GrabASeat - Password Reset Link",
         html: `
@@ -536,10 +522,10 @@ app.post('/api/book', async (req, res) => {
       try {
         let qr = '';
         try { qr = await QRCode.toDataURL(newBooking._id.toString()); } catch (_) { }
-        await transporter.sendMail({
-          from: `"GrabASeat Tickets" <${getTrimmedEnv('EMAIL_USER')}>`,
+        await resend.emails.send({
+          from: 'onboarding@resend.dev',
           to: email,
-          subject: `Your Tickets: ${movieTitle}`,
+          subject: `GrabASeat - Ticket Booking Confirmation: ${movieTitle}`,
           html: `
             <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#111214;color:#fff;padding:35px;border-radius:20px;text-align:center;border:1px solid rgba(255, 195, 0, 0.2)">
               <h1 style="letter-spacing:1px;margin:0 0 10px;font-weight:900;font-size:2rem">
