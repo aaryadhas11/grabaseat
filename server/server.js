@@ -31,12 +31,14 @@ const app = express();
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false, // true for 465, false for other ports
-  family: 4,     // forces IPv4 (fixes ENETUNREACH on cloud containers)
+  secure: false,
+  lookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { family: 4 }, callback);
+  },
   auth: {
     user: getTrimmedEnv('EMAIL_USER', process.env.EMAIL_USER),
-    pass: getTrimmedEnv('EMAIL_PASS', process.env.EMAIL_PASS)
-  }
+    pass: getTrimmedEnv('EMAIL_PASS', process.env.EMAIL_PASS),
+  },
 });
 
 app.use(cors({
