@@ -414,7 +414,8 @@ const handleForgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour expiration
     await user.save();
 
-    const resetUrl = `http://localhost:5173/reset-password/${token}`;
+    const clientUrl = process.env.CLIENT_URL || "https://grabaseat-2dnc.vercel.app";
+    const resetUrl = `${clientUrl}/reset-password/${token}`;
 
     try {
       await resend.emails.send({
