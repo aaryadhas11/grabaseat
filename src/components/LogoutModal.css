@@ -1,0 +1,69 @@
+.logout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.logout-card {
+  background: #111;
+  border: 1px solid #333;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 350px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+}
+
+.logout-title {
+  color: #FFC300;
+  margin-bottom: 15px;
+  font-weight: 800;
+}
+
+.logout-desc {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+
+.logout-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.logout-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.logout-btn-cancel {
+  background: #222;
+  color: #fff;
+}
+
+.logout-btn-cancel:hover {
+  background: #333;
+}
+
+.logout-btn-confirm {
+  background: #FFC300;
+  color: #000;
+}
+
+.logout-btn-confirm:hover {
+  background: #e6b000;
+}

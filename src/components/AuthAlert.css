@@ -1,0 +1,50 @@
+.auth-alert-container {
+  position: fixed;
+  top: 20px;
+  /* Bring it higher */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 500px;
+  background: #000;
+  border: 2px solid #FFC300;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9999;
+  /* HIGHEST LAYER POSSIBLE */
+  box-shadow: 0 0 30px rgba(255, 195, 0, 0.5);
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.auth-alert-message {
+  color: #FFC300;
+  font-weight: 800;
+  margin: 0;
+}
+
+.auth-alert-close {
+  background: none;
+  border: none;
+  color: #FFC300;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 20px;
+  transition: transform 0.2s ease;
+  z-index: 9999;
+}

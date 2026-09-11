@@ -1,0 +1,251 @@
+.hero {
+  position: relative;
+  /* Changed height to min-height so it expands to fit the cards below the button */
+  min-height: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Stack content vertically */
+  align-items: center;
+  justify-content: center;
+  background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  /* Parallax effect stays */
+  overflow: hidden;
+  padding: 60px 0;
+  /* Space for top and bottom */
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, var(--bg-color) 0%, rgba(11, 12, 16, 0.4) 50%, rgba(11, 12, 16, 0.7) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 20px;
+  animation: fadeIn 1.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-links {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 25px;
+  /* Adjusted for better centering in a column layout */
+  justify-content: center;
+}
+
+.hero-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  transition: color 0.3s ease;
+  opacity: 0.8;
+}
+
+.hero-links a:hover {
+  color: #FFC300;
+  opacity: 1;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  font-weight: 400;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.book-now-btn {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #000;
+  background-color: #FFC300;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(255, 195, 0, 0.4);
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.book-now-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 195, 0, 0.6);
+  background-color: #FFD700;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .book-now-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+}
+
+/* --- Live Shows Cards: THE FIX --- */
+.live-shows-cards-container {
+  position: relative;
+  /* Changed from absolute */
+  z-index: 2;
+  /* Keep it above overlay */
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+  margin-top: 100px;
+  /* Force space below the Book Now button */
+  overflow-x: auto;
+  padding: 10px 20px 30px 20px;
+  max-width: 1200px;
+}
+
+.live-shows-cards-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.live-shows-cards-container::-webkit-scrollbar-thumb {
+  background: #FFC300;
+  border-radius: 3px;
+}
+
+.live-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 4px;
+  z-index: 10;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.live-card {
+  flex-shrink: 0;
+  /* Prevent cards from squishing */
+  width: 180px;
+  height: 120px;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.live-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 195, 0, 0.3);
+  border: 1px solid rgba(255, 195, 0, 0.5);
+}
+
+.live-card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+  filter: brightness(0.7);
+}
+
+.live-card:hover .live-card-bg {
+  transform: scale(1.1);
+  filter: brightness(0.9);
+}
+
+.live-card-bg.acoustic {
+  background-image: url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=800&auto=format&fit=crop');
+}
+
+.live-card-bg.laughs {
+  background-image: url('https://images.unsplash.com/photo-1585647347483-22b66260dfff?q=80&w=800&auto=format&fit=crop');
+}
+
+.live-card-bg.grand {
+  background-image: url('https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=800&auto=format&fit=crop');
+}
+
+.live-card p {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}

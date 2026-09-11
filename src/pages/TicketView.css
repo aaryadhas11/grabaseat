@@ -1,0 +1,105 @@
+.ticket-page {
+    padding: 80px 20px;
+    background: #0b0c10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.email-status-banner {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    padding: 15px 30px;
+    border-radius: 50px;
+    margin-bottom: 30px;
+    border: 1px solid #28a745;
+}
+
+.ticket-card {
+    background: #fff;
+    color: #000;
+    display: flex;
+    border-radius: 20px;
+    width: 800px;
+    min-height: 350px;
+}
+
+.ticket-left {
+    flex: 2;
+    padding: 40px;
+    border-right: 2px dashed #ccc;
+}
+
+.ticket-brand {
+    font-weight: 900;
+    font-size: 1.5rem;
+}
+
+.ticket-brand span {
+    color: #e50914;
+}
+
+.ticket-movie-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 20px 0;
+}
+
+.ticket-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.detail-item label {
+    color: #888;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.detail-item span {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.ticket-right {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+    border-radius: 0 20px 20px 0;
+}
+
+.qr-box {
+    width: 130px;
+    height: 130px;
+    background: #000;
+    margin-bottom: 10px;
+}
+
+.ticket-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.action-btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.action-btn.download {
+    background: #FFC300;
+    color: #000;
+}
+
+.action-btn.home {
+    background: #333;
+    color: #fff;
+}
