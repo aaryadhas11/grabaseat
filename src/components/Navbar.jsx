@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../context/GlobalState';
 import { FiX } from 'react-icons/fi';
-import './navbar.css';
+import "./Navbar.css";
 
 import logoImg from '../assets/logo.png';
 
