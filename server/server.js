@@ -29,7 +29,7 @@ const razorpayInstance = new Razorpay({
 const app = express();
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: 'smtp.gmail.com',
   port: 587,
   secure: false,
   lookup: (hostname, options, callback) => {
@@ -37,8 +37,8 @@ const transporter = nodemailer.createTransport({
   },
   auth: {
     user: getTrimmedEnv('EMAIL_USER', process.env.EMAIL_USER),
-    pass: getTrimmedEnv('EMAIL_PASS', process.env.EMAIL_PASS),
-  },
+    pass: getTrimmedEnv('EMAIL_PASS', process.env.EMAIL_PASS)
+  }
 });
 
 app.use(cors({
