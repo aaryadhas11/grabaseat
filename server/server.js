@@ -29,10 +29,13 @@ const razorpayInstance = new Razorpay({
 const app = express();
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  family: 4,     // forces IPv4 (fixes ENETUNREACH on cloud containers)
   auth: {
-    user: getTrimmedEnv('EMAIL_USER'),
-    pass: getTrimmedEnv('EMAIL_PASS')
+    user: getTrimmedEnv('EMAIL_USER', process.env.EMAIL_USER),
+    pass: getTrimmedEnv('EMAIL_PASS', process.env.EMAIL_PASS)
   }
 });
 
