@@ -37,7 +37,11 @@ const transporter = nodemailer.createTransport({
 });
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: [
+    "http://localhost:5173",
+    "https://grabaseat-2dnc.vercel.app",
+    /\.vercel\.app$/
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
