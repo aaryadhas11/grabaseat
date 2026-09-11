@@ -28,20 +28,12 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
-      let res;
-      try {
-        res = await fetch(`http://localhost:5000/api/reset-password/${token}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: newPassword })
-        });
-      } catch (_) {
-        res = await fetch(`/api/reset-password/${token}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: newPassword })
-        });
-      }
+      const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+      const res = await fetch(`${API_BASE_URL}/api/reset-password/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: newPassword })
+      });
       const data = await res.json();
       setLoading(false);
       if (res.ok) {

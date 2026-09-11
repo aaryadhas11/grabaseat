@@ -127,17 +127,18 @@ const Admin = () => {
     };
 
     try {
+      const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
       let res;
       if (editMode) {
         // PUT edit
-        res = await fetch(`http://localhost:5000/api/movies/${selectedMovieId}`, {
+        res = await fetch(`${API_BASE_URL}/api/movies/${selectedMovieId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
       } else {
         // POST create
-        res = await fetch('http://localhost:5000/api/movies', {
+        res = await fetch(`${API_BASE_URL}/api/movies`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -160,7 +161,8 @@ const Admin = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Remove this movie/show from the database completely?")) {
       try {
-        const res = await fetch(`http://localhost:5000/api/movies/${id}`, { method: 'DELETE' });
+        const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+        const res = await fetch(`${API_BASE_URL}/api/movies/${id}`, { method: 'DELETE' });
         if (res.ok) {
           setToastMessage('Show removed from catalog.');
           setTimeout(() => window.location.reload(), 1000);

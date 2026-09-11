@@ -25,7 +25,8 @@ const Bookings = () => {
       setLoading(false);
       return;
     }
-    fetch(`http://localhost:5000/api/bookings/user/${currentUser.email}`)
+    const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+    fetch(`${API_BASE_URL}/api/bookings/user/${currentUser.email}`)
       .then(res => res.json())
       .then(data => {
         setBookings(Array.isArray(data) ? data : []);

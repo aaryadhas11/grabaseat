@@ -25,12 +25,14 @@ const PaymentModal = () => {
     setPaymentFailed(false);
 
     try {
+      const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+
       // Strip any currency symbols, keep numeric value
       const rawPrice = pendingBooking?.totalPrice || '0';
       const cleanPrice = Number(String(rawPrice).replace(/[^0-9.]/g, ''));
 
       // Backend multiplies by 100 (paise), so send the rupee amount as-is
-      const orderRes = await fetch('http://localhost:5000/api/payment/order', {
+      const orderRes = await fetch(`${API_BASE_URL}/api/payment/order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: cleanPrice })
@@ -52,7 +54,7 @@ const PaymentModal = () => {
         handler: async function (razorpayResponse) {
           // ── Save booking to DB ──
           try {
-            const bookRes = await fetch('http://localhost:5000/api/book', {
+            const bookRes = await fetch(`${API_BASE_URL}/api/book`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({

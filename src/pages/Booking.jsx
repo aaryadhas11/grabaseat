@@ -79,8 +79,9 @@ const Booking = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const movieId = movie ? (movie._id || movie.id) : id;
+    const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
     
-    fetch('http://localhost:5000/api/bookings/' + movieId + '?theater=' + encodeURIComponent(theater) + '&bookingDate=' + encodeURIComponent(date) + '&showTime=' + encodeURIComponent(selectedTime))
+    fetch(`${API_BASE_URL}/api/bookings/${movieId}?theater=${encodeURIComponent(theater)}&bookingDate=${encodeURIComponent(date)}&showTime=${encodeURIComponent(selectedTime)}`)
       .then(res => res.json())
       .then(data => {
         let allSeats = [];

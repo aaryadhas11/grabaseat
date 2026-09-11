@@ -3,6 +3,8 @@ import { moviesData as localMoviesData } from '../moviesData';
 
 export const GlobalContext = createContext();
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+
 export const GlobalProvider = ({ children }) => {
   const [likedList, setLikedList] = useState([]);
   const [dislikedList, setDislikedList] = useState([]);
@@ -47,7 +49,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Fetch dynamic movies database (falls back to local data if server is offline)
-    fetch('http://localhost:5000/api/movies')
+    fetch(`${API_BASE_URL}/api/movies`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) setMoviesData(data);
@@ -61,7 +63,7 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchUserWishlist = async (email) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/wishlist/${email}`);
+      const res = await fetch(`${API_BASE_URL}/api/wishlist/${email}`);
       if (res.ok) {
         const data = await res.json();
         if (data.likedList) setLikedList(data.likedList.map(id => String(id)));
@@ -74,7 +76,7 @@ export const GlobalProvider = ({ children }) => {
   // Authentication Functions
   const handleLogin = async (email, password) => {
     try {
-      const res = await fetch('http://localhost:5000/api/register', {
+      const res = await fetch(`${API_BASE_URL}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, isLogin: true })
@@ -99,7 +101,7 @@ export const GlobalProvider = ({ children }) => {
 
   const handleRegister = async (name, email, password) => {
     try {
-      const res = await fetch('http://localhost:5000/api/register', {
+      const res = await fetch(`${API_BASE_URL}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
@@ -159,7 +161,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/wishlist/toggle', {
+      const response = await fetch(`${API_BASE_URL}/api/wishlist/toggle`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: currentUser.email, movieId: String(id) })

@@ -123,20 +123,12 @@ const AuthModal = () => {
     } else {
       // Forgot password flow
       try {
-        let response;
-        try {
-          response = await fetch('http://localhost:5000/api/forgot-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-          });
-        } catch (_) {
-          response = await fetch('/api/forgot-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-          });
-        }
+        const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+        const response = await fetch(`${API_BASE_URL}/api/forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
         const data = await response.json();
         setIsLoading(false);
         if (response.ok) {

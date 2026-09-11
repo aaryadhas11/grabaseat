@@ -76,7 +76,8 @@ const Showtimes = () => {
   useEffect(() => {
     if (!movie) return;
     const movieId = movie._id || movie.id;
-    fetch(`http://localhost:5000/api/bookings/${movieId}?bookingDate=${encodeURIComponent(selectedDate)}`)
+    const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://grabaseat-api.onrender.com').replace(/\/$/, '');
+    fetch(`${API_BASE_URL}/api/bookings/${movieId}?bookingDate=${encodeURIComponent(selectedDate)}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
