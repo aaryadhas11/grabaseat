@@ -49,7 +49,7 @@ const Booking = () => {
   const date = searchParams.get('date') || 'Today';
   const showTimeQuery = searchParams.get('time') || '';
 
-  const { moviesData, currentUser, isLoggedIn, setShowAuthModal, setShowPaymentModal, setPendingBooking } = useGlobalContext();
+  const { moviesData, currentUser, isLoggedIn, setShowAuthModal, setShowPaymentModal, setPendingBooking, setToastMessage } = useGlobalContext();
 
   const movie = moviesData.find(m => String(m._id || m.id) === String(id));
 
@@ -110,9 +110,9 @@ const Booking = () => {
     const isMovie = movieType === 'movie' || movieType === 'tv-show';
     
     if (isMovie) {
-      if (row === 'E' || row === 'F') return { price: 450, tier: 'RECLINER' };
-      if (row === 'C' || row === 'D') return { price: 250, tier: 'PRIME / EXECUTIVE' };
-      return { price: 150, tier: 'CLASSIC' };
+      if (row === 'E' || row === 'F') return { price: movie?.pricing?.recliner || 450, tier: 'RECLINER' };
+      if (row === 'C' || row === 'D') return { price: movie?.pricing?.prime || 250, tier: 'PRIME / EXECUTIVE' };
+      return { price: movie?.pricing?.classic || 150, tier: 'CLASSIC' };
     } else {
       if (row === 'A' || row === 'B') return { price: 999, tier: 'STAGE FRONT: VIP / LOUNGE' };
       if (row === 'C' || row === 'D') return { price: 499, tier: 'MIDDLE SECTION: GOLD PHASE' };
@@ -161,7 +161,16 @@ const Booking = () => {
   };
 
   const handleSeatClick = (seatId) => {
-    if (dbBookedSeats.includes(seatId) || isHousefull) return;
+    const isBooked = dbBookedSeats.includes(seatId);
+    const isBlocked = movie?.blockedSeats?.includes(seatId);
+
+    if (isBooked || isBlocked || isHousefull) {
+      if (setToastMessage) {
+        setToastMessage("Seat unavailable");
+      }
+      return; // Short-circuit cleanly without modifying selectedSeats state
+    }
+
     setSelectedSeats((prev) =>
       prev.includes(seatId) ? prev.filter((s) => s !== seatId) : [...prev, seatId]
     );

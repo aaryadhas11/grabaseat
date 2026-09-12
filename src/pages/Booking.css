@@ -522,15 +522,136 @@
 }
 
 @media (max-width: 768px) {
-  .booking-main-card {
-    padding: 25px 20px;
+  .booking-outer-container {
+    padding: 85px 12px 40px;
   }
+  .booking-main-card {
+    padding: 22px 14px;
+    border-radius: 18px;
+  }
+  .movie-title-display {
+    font-size: 1.8rem;
+  }
+  .seat-tier-header,
+  .tier-header-divider {
+    max-width: 100%;
+    font-size: 0.75rem;
+  }
+  .seat-row-line,
+  .seat-row {
+    gap: 6px;
+  }
+  .row-seats,
+  .seats-group {
+    gap: 5px;
+  }
+  .seat,
+  .seat-pill {
+    width: 27px;
+    height: 27px;
+    min-width: 27px;
+    min-height: 27px;
+    font-size: 0.7rem;
+    border-radius: 6px;
+  }
+  .row-label-cell,
+  .row-label {
+    width: 16px;
+    font-size: 0.75rem;
+  }
+  .seat-legend-bar {
+    gap: 10px 14px;
+    margin-top: 25px;
+  }
+  .legend-chip {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+  .booking-action-footer,
+  .booking-summary-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    text-align: center;
+    margin-top: 30px;
+  }
+  .pricing-summary-col {
+    align-items: center;
+  }
+  .proceed-checkout-btn,
+  .proceed-payment-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile Viewports (360px - 430px Android/iOS) */
+@media (max-width: 440px) {
+  .booking-outer-container {
+    padding: 75px 8px 30px;
+  }
+  .booking-main-card {
+    padding: 16px 10px;
+    border-radius: 16px;
+  }
+  .movie-title-display {
+    font-size: 1.5rem;
+  }
+  .screen-area {
+    margin: 20px 0 25px;
+  }
+  .screen-curve {
+    width: 92%;
+  }
+  .seating-matrix-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+  }
+  .seat-row-line,
+  .seat-row {
+    gap: 4px;
+    justify-content: center;
+  }
+  .row-seats,
   .seats-group {
     gap: 4px;
   }
+  .seat,
   .seat-pill {
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    min-height: 25px;
+    font-size: 0.65rem;
+    border-radius: 5px;
+  }
+  .row-label-cell,
+  .row-label {
+    width: 14px;
     font-size: 0.7rem;
+  }
+  .time-chips-container {
+    gap: 8px;
+  }
+  .time-chip {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+  .seat-legend-bar {
+    gap: 8px 10px;
+    padding: 0 4px;
+  }
+  .legend-chip {
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+  .legend-indicator {
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    min-height: 12px;
   }
 }

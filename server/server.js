@@ -500,32 +500,65 @@ app.post('/api/payment/order', async (req, res) => {
   }
 });
 
-// --- BOOKING (Fixed Processing Hang & Email) ---
+// --- BOOKING (Atomic Collision Check & Resend Email Dispatch) ---
 app.post('/api/book', async (req, res) => {
   try {
     const { email, movieId, movieTitle, selectedSeats, totalPrice, showTime, paymentId, theater, bookingDate } = req.body;
 
+    const recipientEmail = (email && typeof email === 'string' && email.trim()) ? email.trim() : null;
+    if (!recipientEmail) {
+      return res.status(400).json({ success: false, error: 'A valid email address is required for ticket delivery.' });
+    }
+
+    const targetTheater = theater || "GrabASeat Cinema";
+    const targetDate = bookingDate || new Date().toLocaleDateString('en-IN');
+    const targetShowTime = showTime || "10:30 AM";
+    const seatsArray = Array.isArray(selectedSeats) ? selectedSeats : [];
+
+    if (seatsArray.length === 0) {
+      return res.status(400).json({ success: false, error: 'No seats selected.' });
+    }
+
+    // Atomic double-booking concurrency check
+    const existingCollision = await Booking.findOne({
+      movieId: String(movieId),
+      theater: targetTheater,
+      bookingDate: targetDate,
+      showTime: targetShowTime,
+      selectedSeats: { $in: seatsArray }
+    });
+
+    if (existingCollision) {
+      const conflictSeats = seatsArray.filter(seat => existingCollision.selectedSeats.includes(seat));
+      return res.status(409).json({
+        success: false,
+        code: 'SEAT_COLLISION',
+        error: `Seat(s) ${conflictSeats.join(', ')} were just booked by another user. Please refresh and select available seats.`,
+        conflictSeats
+      });
+    }
+
     const newBooking = new Booking({
-      email,
-      movieId,
+      email: recipientEmail,
+      movieId: String(movieId),
       movieTitle,
-      selectedSeats,
+      selectedSeats: seatsArray,
       totalPrice,
-      showTime,
-      paymentId,
-      theater: theater || "GrabASeat Cinema",
-      bookingDate: bookingDate || new Date().toLocaleDateString('en-IN')
+      showTime: targetShowTime,
+      paymentId: paymentId || "N/A",
+      theater: targetTheater,
+      bookingDate: targetDate
     });
     await newBooking.save();
 
-    // Fire-and-forget email
+    // Fire-and-forget email dispatch via Resend HTTPS API (Non-blocking)
     (async () => {
       try {
         let qr = '';
         try { qr = await QRCode.toDataURL(newBooking._id.toString()); } catch (_) { }
         await resend.emails.send({
           from: 'onboarding@resend.dev',
-          to: email,
+          to: recipientEmail,
           subject: `GrabASeat - Ticket Booking Confirmation: ${movieTitle}`,
           html: `
             <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#111214;color:#fff;padding:35px;border-radius:20px;text-align:center;border:1px solid rgba(255, 195, 0, 0.2)">
@@ -538,8 +571,8 @@ app.post('/api/book', async (req, res) => {
                 <h3 style="color:#FFC300;margin:0 0 15px;font-size:1.4rem;border-bottom:1px solid #333;padding-bottom:10px">${movieTitle}</h3>
                 <p style="margin:8px 0;font-size:0.95rem"><strong>🏛️ Theater:</strong> ${newBooking.theater}</p>
                 <p style="margin:8px 0;font-size:0.95rem"><strong>📅 Date:</strong> ${newBooking.bookingDate}</p>
-                <p style="margin:8px 0;font-size:0.95rem"><strong>🕒 Showtime:</strong> ${showTime || "10:30 AM"}</p>
-                <p style="margin:8px 0;font-size:0.95rem"><strong>💺 Seats:</strong> ${selectedSeats.join(', ')}</p>
+                <p style="margin:8px 0;font-size:0.95rem"><strong>🕒 Showtime:</strong> ${targetShowTime}</p>
+                <p style="margin:8px 0;font-size:0.95rem"><strong>💺 Seats:</strong> ${seatsArray.join(', ')}</p>
                 <p style="margin:8px 0;font-size:0.95rem"><strong>💰 Total Price:</strong> ₹${totalPrice}</p>
                 <p style="margin:8px 0;font-size:0.95rem"><strong>💳 Payment ID:</strong> ${paymentId || "N/A"}</p>
               </div>
@@ -556,10 +589,10 @@ app.post('/api/book', async (req, res) => {
             </div>
           `
         });
-      } catch (emailErr) { console.error('Email failed:', emailErr.message); }
+      } catch (emailErr) { console.error('Resend background email dispatch error:', emailErr.message); }
     })();
 
-    // CRITICAL: Send JSON response to stop the frontend spinner
+    // CRITICAL: Send HTTP 201 response immediately to unblock frontend
     res.status(201).json({ success: true, message: 'Booking saved!', booking: newBooking });
   } catch (error) {
     console.error("Booking Error:", error.message);

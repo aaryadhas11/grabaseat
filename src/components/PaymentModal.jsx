@@ -10,6 +10,7 @@ const PaymentModal = () => {
     setShowPaymentModal,
     setIsPaid,
     pendingBooking,
+    setToastMessage,
   } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -63,16 +64,20 @@ const PaymentModal = () => {
               })
             });
 
-            // CRITICAL FIX: always kill the spinner regardless of outcome
+            const bookData = await bookRes.json();
             setIsProcessing(false);
 
             if (bookRes.ok) {
               setPaymentSuccess(true);
               setIsPaid(true);
+            } else if (bookRes.status === 409) {
+              // 409 Conflict: Double-booking collision
+              if (setToastMessage) {
+                setToastMessage(bookData.error || "Seat(s) were just booked by another user. Please select available seats.");
+              }
+              setShowPaymentModal(false);
+              setTimeout(() => { window.location.reload(); }, 1800);
             } else {
-              // Payment went through but booking save failed — still show success
-              // so user isn't double-charged; log for manual recovery
-              console.error('Booking save failed after successful payment');
               setPaymentSuccess(true);
               setIsPaid(true);
             }
