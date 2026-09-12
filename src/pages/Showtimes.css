@@ -67,18 +67,19 @@
 
 .dates-container-inner {
   display: flex;
-  gap: 15px;
+  gap: 8px;
   overflow-x: auto;
   padding-bottom: 4px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .dates-container-inner::-webkit-scrollbar {
-  height: 4px;
-}
-
-.dates-container-inner::-webkit-scrollbar-thumb {
-  background: rgba(255, 195, 0, 0.2);
-  border-radius: 4px;
+  display: none;
+  height: 0;
+  width: 0;
 }
 
 .date-tab-card {
@@ -89,8 +90,10 @@
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: #888;
-  min-width: 70px;
-  padding: 10px 5px;
+  min-width: 68px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  padding: 8px 6px;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -304,5 +307,56 @@
   }
   .cinema-card-panel {
     padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .showtimes-outer-wrapper {
+    padding: 75px 12px 30px;
+  }
+
+  .movie-title-heading,
+  .showtimes-title-meta h1 {
+    font-size: 1.5rem;
+  }
+
+  .dates-selector-bar {
+    padding: 8px 10px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+  }
+
+  .cinema-card-panel {
+    padding: 16px 12px;
+    border-radius: 14px;
+    gap: 14px;
+  }
+
+  .cinema-name-header {
+    font-size: 1.1rem;
+  }
+
+  .cinema-slots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .time-slot-pill {
+    padding: 8px 12px;
+    min-width: calc(33.333% - 6px);
+    flex: 1 1 calc(33.333% - 6px);
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+
+  .slot-time-text {
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .slot-availability {
+    font-size: 0.6rem;
+    white-space: nowrap;
   }
 }
