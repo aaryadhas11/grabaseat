@@ -1,8 +1,10 @@
 .hero {
   position: relative;
   /* Changed height to min-height so it expands to fit the cards below the button */
-  min-height: 800px;
+  min-height: 700px;
   width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   /* Stack content vertically */
@@ -14,7 +16,7 @@
   background-attachment: fixed;
   /* Parallax effect stays */
   overflow: hidden;
-  padding: 60px 0;
+  padding: 60px 16px;
   /* Space for top and bottom */
 }
 
@@ -33,7 +35,9 @@
   z-index: 2;
   text-align: center;
   max-width: 900px;
-  padding: 0 20px;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
   animation: fadeIn 1.5s ease;
   display: flex;
   flex-direction: column;
@@ -46,6 +50,7 @@
   margin-bottom: 25px;
   /* Adjusted for better centering in a column layout */
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .hero-links a {
@@ -65,19 +70,25 @@
 }
 
 .hero-title {
-  font-size: 4.5rem;
+  font-size: clamp(1.75rem, 5vw, 4.5rem);
   font-weight: 800;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
+  max-width: 90%;
+  text-align: center;
   color: #fff;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
-  line-height: 1.1;
+  line-height: 1.15;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   color: var(--text-secondary);
-  margin-bottom: 40px;
+  margin: 0 auto 40px;
+  max-width: 90%;
+  text-align: center;
   font-weight: 400;
   text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
 }
@@ -117,17 +128,62 @@
 }
 
 @media screen and (max-width: 768px) {
+  .hero {
+    min-height: auto;
+    padding: 40px 16px;
+    background-attachment: scroll;
+  }
+
+  .hero-links {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .hero-links a {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+  }
+
   .hero-title {
-    font-size: 3rem;
+    font-size: clamp(1.75rem, 5vw, 2.8rem);
+    max-width: 90%;
+    margin: 0 auto 16px;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
   }
 
   .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: clamp(0.95rem, 3.5vw, 1.2rem);
+    max-width: 90%;
+    margin: 0 auto 25px;
+    text-align: center;
   }
 
   .book-now-btn {
     padding: 12px 30px;
     font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .hero-title {
+    font-size: clamp(1.5rem, 6.5vw, 2.2rem);
+    max-width: 92%;
+    margin: 0 auto 14px;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    max-width: 92%;
+    margin: 0 auto 20px;
+  }
+
+  .book-now-btn {
+    padding: 10px 24px;
+    font-size: 0.9rem;
   }
 }
 

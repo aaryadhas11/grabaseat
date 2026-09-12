@@ -245,15 +245,39 @@ const Home = () => {
 
       {/* Location bar */}
       <div style={{
-        padding: '12px 40px',
+        padding: '8px 16px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottom: '1px solid #333'
+        borderBottom: '1px solid #333',
+        gap: '12px',
+        width: '100%',
+        boxSizing: 'border-box',
+        overflow: 'hidden'
       }}>
-        <span style={{ color: '#fff', fontWeight: 'bold' }}>
-          LOCATION: <span style={{ color: '#FFC300' }}>{selectedCity}</span>
-        </span>
+        <div style={{
+          color: '#fff',
+          fontWeight: 'bold',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          minWidth: 0,
+          flex: '1 1 auto',
+          overflow: 'hidden'
+        }}>
+          <span style={{ flexShrink: 0, fontSize: '0.85rem' }}>LOCATION:</span>
+          <span style={{
+            color: '#FFC300',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            maxWidth: '180px',
+            fontSize: '0.85rem',
+            display: 'inline-block'
+          }}>
+            {selectedCity}
+          </span>
+        </div>
         <button
           onClick={() => { localStorage.removeItem('userCity'); setSelectedCity(null); }}
           style={{
@@ -264,7 +288,9 @@ const Home = () => {
             padding: '5px 10px',
             fontWeight: 'bold',
             textTransform: 'uppercase',
-            fontSize: '0.75rem'
+            fontSize: '0.75rem',
+            flexShrink: 0,
+            whiteSpace: 'nowrap'
           }}
         >
           CHANGE CITY

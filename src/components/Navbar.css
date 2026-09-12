@@ -9,6 +9,18 @@
   border-bottom: 1px solid #222;
   position: relative;
   z-index: 2000;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 16px;
+  }
+  .brand-name {
+    font-size: 1.35rem;
+  }
 }
 
 .nav-logo-container {
