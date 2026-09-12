@@ -33,7 +33,7 @@ const CityPicker = () => {
 
   const autoDetectLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
+      handleCitySelect('Pune');
       return;
     }
     setIsLocating(true);
@@ -41,25 +41,24 @@ const CityPicker = () => {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords;
-          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
           const data = await res.json();
-          const detectedCity = data.address.city || data.address.state_district || data.address.town || data.address.village;
           
-          if (detectedCity) {
-            handleCitySelect(detectedCity);
-          } else {
-            alert("Could not accurately determine your city.");
-            setIsLocating(false);
-          }
+          const rawCity = data?.address?.city || data?.address?.town || data?.address?.state_district || data?.address?.county || 'Pune';
+          const trimmedCity = (typeof rawCity === 'string' && rawCity.trim()) ? rawCity.trim() : 'Pune';
+          const formattedCity = trimmedCity.charAt(0).toUpperCase() + trimmedCity.slice(1);
+          
+          handleCitySelect(formattedCity);
         } catch (error) {
-          console.error(error);
-          alert("Failed to fetch location data.");
+          console.error("Reverse geocoding error:", error);
+          handleCitySelect('Pune');
+        } finally {
           setIsLocating(false);
         }
       },
       (error) => {
-        console.error(error);
-        alert("Location access denied or unavailable.");
+        console.error("Geolocation access error:", error);
+        handleCitySelect('Pune');
         setIsLocating(false);
       }
     );
